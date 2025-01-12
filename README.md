@@ -26,7 +26,7 @@ Estados Unidos, Alemania y Rusia cuentan con las mayores cifras de participació
   <img src="https://github.com/JCAMLUG/PR_parte2_VD/blob/main/images/medallas.png?raw=true" alt="Sublime's custom image"/>
 </p>
 
-
+# INCLUSIÓN
 
 <p align="center">
   <img src="https://github.com/JCAMLUG/PR_parte2_VD/blob/main/images/piramide_torta.png?raw=true" alt="Sublime's custom image"/>
