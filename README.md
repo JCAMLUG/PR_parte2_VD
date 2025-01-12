@@ -22,21 +22,34 @@ Algunos países han tomado la delantera en la promoción de la participación fe
 
 Estados Unidos, Alemania y Rusia cuentan con las mayores cifras de participación femenina en sus equipos olímpicos.
 
+<p align="center">
+  <img src="https://github.com/JCAMLUG/PR_parte2_VD/blob/main/images/medallas.png?raw=true" alt="Sublime's custom image"/>
+</p>
 
 
 
+<p align="center">
+  <img src="https://github.com/JCAMLUG/PR_parte2_VD/blob/main/images/piramide_torta.png?raw=true" alt="Sublime's custom image"/>
+</p>
 
 El atletismo, la gimnasia y la natación, son los deportes con mayor participación femenina.
 
-
+<p align="center">
+  <img src="https://github.com/JCAMLUG/PR_parte2_VD/blob/main/images/podium.png?raw=true" alt="Sublime's custom image"/>
+</p>
 
 # EQUIDAD EN MEDALLAS 
 
-
+<p align="center">
+  <img src="https://github.com/JCAMLUG/PR_parte2_VD/blob/main/images/glinea.png?raw=true" alt="Sublime's custom image"/>
+</p>
 
 
 Continúa existiendo una brecha significativa, aunque se reducen las distancias.
 
+<p align="center">
+  <img src="https://github.com/JCAMLUG/PR_parte2_VD/blob/main/images/brecha.png?raw=true" alt="Sublime's custom image"/>
+</p>
 
 # CONCLUSIONES
 
