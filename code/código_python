@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Carga de los datos
+# https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-historyathletes-and-results
+
 file_path = 'athlete_events.csv'
 data = pd.read_csv(file_path)
 
