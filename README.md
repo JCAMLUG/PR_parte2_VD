@@ -1,4 +1,4 @@
-Se puede acceder a la visualización en el siguiente enlace:
+Se puede acceder a la visualización completa en el siguiente enlace:
 
 https://infogram.com/participacionfemeninajjoo-1hmr6g8oqodwz2n?live
 
