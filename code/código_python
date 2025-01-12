@@ -1,0 +1,287 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Carga de los datos
+file_path = 'athlete_events.csv'
+data = pd.read_csv(file_path)
+
+# Filtrado de los datos por género
+df_women = data[data['Sex'] == 'F']
+df_men = data[data['Sex'] == 'M']
+
+# Separar por temporada (Winter, Summer)
+df_women_summer = df_women[df_women['Season'] == 'Summer']
+df_women_winter = df_women[df_women['Season'] == 'Winter']
+df_men_summer = df_men[df_men['Season'] == 'Summer']
+df_men_winter = df_men[df_men['Season'] == 'Winter']
+
+# 1. ¿En qué deportes han tenido mayor o menor representación las mujeres?
+
+# Contamos los deportes con mayor y menor participación femenina en verano
+women_sports_count_summer = df_women_summer['Sport'].value_counts()
+
+# Gráfico de barras
+plt.figure(figsize=(10, 6))
+women_sports_count_summer.head(10).plot(kind='bar', color='teal')
+plt.title('Top 10 Deportes con Mayor Representación de Mujeres (Summer)')
+plt.xlabel('Deporte')
+plt.ylabel('Número de Participantes')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Contamos los deportes con mayor y menor participación femenina en invierno
+women_sports_count_winter = df_women_winter['Sport'].value_counts()
+
+# Gráfico de barras
+plt.figure(figsize=(10, 6))
+women_sports_count_winter.head(10).plot(kind='bar', color='teal')
+plt.title('Top 10 Deportes con Mayor Representación de Mujeres (Winter)')
+plt.xlabel('Deporte')
+plt.ylabel('Número de Participantes')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Contamos los deportes con mayor y menor participación masculina en verano
+men_sports_count_summer = df_men_summer['Sport'].value_counts()
+
+# Gráfico de barras
+plt.figure(figsize=(10, 6))
+men_sports_count_summer.head(10).plot(kind='bar', color='teal')
+plt.title('Top 10 Deportes con Mayor Representación de Hombres (Summer)')
+plt.xlabel('Deporte')
+plt.ylabel('Número de Participantes')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Contamos los deportes con mayor y menor participación masculina en verano
+men_sports_count_winter = df_men_winter['Sport'].value_counts()
+
+# Gráfico de barras
+plt.figure(figsize=(10, 6))
+men_sports_count_winter.head(10).plot(kind='bar', color='teal')
+plt.title('Top 10 Deportes con Mayor Representación de Hombres (Winter)')
+plt.xlabel('Deporte')
+plt.ylabel('Número de Participantes')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Diccionario NOC para hacer el reemplazo por el nombre del país
+noc_to_country = {
+    # Se agregan los códigos NOC 
+            'AFG':'Afghanistan','AHO':'Netherlands','ALB':'Albania ','ALG':'Algeria','AND':'Andorra','ANG':'Angola',
+            'ANT':'Antigua and Barbuda','ANZ':'Australia','ARG':'Argentina','ARM':'Armenia','ARU':'Netherlands','ASA':'USA','AUS':'Australia',
+            'AUT':'Austria','AZE':'Azerbaijan','BAH':'Bahamas','BAN':'Bangladesh','BAR':'Barbados','BDI':'Burundi','BEL':'Belgium',
+            'BEN':'Benin','BER':'UK','BHU':'Bhutan','BIH':'Bosnia Herzegovina','BIZ':'Belize','BLR':'Belarus','BOH':'Czech Republic',
+            'BOL':'Boliva','BOT':'Botswana','BRA':'Brazil','BRN':'Bahrain','BRU':'Brunei','BUL':'Bulgaria','BUR':'Burkina Faso',
+            'CAF':'Central African Republic','CAM':'Cambodia','CAN':'Canada','CAY':'UK','CGO':'Republic of Congo','CHA':'Chad',
+            'CHI':'Chile','CHN':'China','CIV':'Ivory Coast','CMR':'Cameroon','COD':'Democratic Republic of the Congo','COK':'New Zealand',
+            'COL':'Colombia','COM':'Comoros','CPV':'Cape Verde','CRC':'Costa Rica','CRO':'Croatia','CRT':'Greece','CUB':'Cuba','CYP':'Cyprus',
+            'CZE':'Czech Republic','DEN':'Denmark','DJI':'Djibouti','DMA':'Dominica','DOM':'Dominican Republic','ECU':'Ecuador','EGY':'Egypt',
+            'ERI':'Eritrea','ESA':'El Salvador','ESP':'Spain','EST':'Estonia','ETH':'Ethiopia','EUN':'Russia','FIJ':'Fiji','FIN':'Finland',
+            'FRA':'France','FRG':'Germany','FSM':'Micronesia','GAB':'Gabon','GAM':'Gambia','GBR':'UK','GBS':'Guinea-Bissau','GDR':'Germany',
+            'GEO':'Georgia','GEQ':'Equatorial Guinea','GER':'Germany','GHA':'Ghana','GRE':'Greece','GRN':'Grenada','GUA':'Guatemala',
+            'GUI':'Guinea','GUM':'USA','GUY':'Guyana','HAI':'Haiti','HKG':'China','HON':'Honduras','HUN':'Hungary','INA':'Indonesia',
+            'IND':'India','IOA':'Individual Olympic Athletes','IRI':'Iran','IRL':'Ireland','IRQ':'Iraq','ISL':'Iceland','ISR':'Israel',
+            'ISV':'USA','ITA':'Italy','IVB':'UK','JAM':'Jamaica','JOR':'Jordan','JPN':'Japan','KAZ':'Kazakhstan','KEN':'Kenya','KGZ':'Kyrgyzstan',
+            'KIR':'Kiribati','KOR':'South Korea','KOS':'Kosovo','KSA':'Saudi Arabia','KUW':'Kuwait','LAO':'Laos','LAT':'Latvia','LBA':'Libya',
+            'LBR':'Liberia','LCA':'Saint Lucia','LES':'Lesotho','LIB':'Lebanon','LIE':'Liechtenstein','LTU':'Lithuania','LUX':'Luxembourg',
+            'MAD':'Madagascar','MAL':'Malaysia','MAR':'Morocco','MAS':'Malaysia','MAW':'Malawi','MDA':'Moldova','MDV':'Maldives','MEX':'Mexico',
+            'MGL':'Mongolia','MHL':'Marshall Islands','MKD':'Macedonia','MLI':'Mali','MLT':'Malta','MNE':'Montenegro','MON':'Monaco',
+            'MOZ':'Mozambique','MRI':'Mauritius','MTN':'Mauritania','MYA':'Myanmar','NAM':'Namibia','NBO':'Malaysia','NCA':'Nicaragua',
+            'NED':'Netherlands','NEP':'Nepal','NFL':'Canada','NGR':'Nigeria','NIG':'Niger','NOR':'Norway','NRU':'Nauru','NZL':'New Zealand',
+            'OMA':'Oman','PAK':'Pakistan','PAN':'Panama','PAR':'Paraguay','PER':'Peru','PHI':'Philippines','PLE':'Palestine','PLW':'Palau',
+            'PNG':'Papua New Guinea','POL':'Poland','POR':'Portugal','PRK':'North Korea','PUR':'Puerto Rico','QAT':'Qatar','RHO':'Zimbabwe',
+            'ROT':'Refugee Olympic Team','ROU':'Romania','RSA':'South Africa','RUS':'Russia','RWA':'Rwanda','SAA':'Germany','SAM':'Samoa',
+            'SCG':'Serbia','SEN':'Senegal','SEY':'Seychelles','SIN':'Singapore','SKN':'Saint Kitts','SLE':'Sierra Leone','SLO':'Slovenia',
+            'SMR':'San Marino','SOL':'Solomon Islands','SOM':'Somalia','SRB':'Serbia','SRI':'Sri Lanka','SSD':'South Sudan','STP':'Sao Tome and Principe',
+            'SUD':'Sudan','SUI':'Switzerland','SUR':'Suriname','SVK':'Slovakia','SWE':'Sweden','SWZ':'Swaziland','SYR':'Syria','TAN':'Tanzania',
+            'TCH':'Czech Republic','TGA':'Tonga','THA':'Thailand','TJK':'Tajikistan','TKM':'Turkmenistan','TLS':'Timor-Leste','TOG':'Togo',
+            'TPE':'China','TTO':'Trinidad and Tobago','TUN':'Tunisia','TUR':'Turkey','TUV':'Tuvalu','UAE':'United Arab Emirates','UAR':'Syria',
+            'UGA':'Uganda','UKR':'Ukraine','UNK':'Unknow','URS':'Russia','URU':'Uruguay','USA':'USA','UZB':'Uzbekistan','VAN':'Vanuatu',
+            'VEN':'Venezuela','VIE':'Vietnam','VIN':'Saint Vincent','VNM':'Vietnam','WIF':'India','YAR':'Yemen','YEM':'Yemen','YMD':'Yemen',
+            'YUG':'Serbia','ZAM':'Zambia','ZIM':'Zimbabwe',
+}
+
+# Se reemplazan los códigos NOC por el nombre del país
+df_women_summer['Country'] = df_women_summer['NOC'].map(noc_to_country)
+df_women_winter['Country'] = df_women_winter['NOC'].map(noc_to_country)
+
+# Contar la cantidad de participantes femeninas por país y año en los JJOO de verano
+participants_female_by_country_year_summer = df_women_summer.groupby(['Country', 'Year']).size().reset_index(name='Female_Participants')
+
+# Sumar la participación femenina por país 
+participants_female_by_country_summer = participants_female_by_country_year_summer.groupby('Country')['Female_Participants'].sum().reset_index()
+
+# Ordenar los países por la cantidad total de participación femenina
+top_10_countries_summer = participants_female_by_country_summer.sort_values(by='Female_Participants', ascending=False).head(10)
+
+# Definir el número de filas y columnas para los subgráficos
+n_rows = 2  # Número de filas
+n_cols = 5  # Número de columnas
+
+# Gráficos con la evolución de la participación femenina para cada país
+fig, axes = plt.subplots(n_rows, n_cols, figsize=(20, 10))
+
+for i, country in enumerate(top_10_countries_summer['Country']):
+    country_data_summer = participants_female_by_country_year_summer[participants_female_by_country_year_summer['Country'] == country]
+    
+    row = i // n_cols
+    col = i % n_cols
+    
+    axes[row, col].plot(country_data_summer['Year'], country_data_summer['Female_Participants'], label=country, color='blue')
+    axes[row, col].set_title(f'Evolución: {country}')
+    axes[row, col].set_xlabel('Año')
+    axes[row, col].set_ylabel('Número de Participantes Femeninas')
+    
+plt.tight_layout()
+plt.show()
+
+# Contar la cantidad de participantes femeninas por país y año en los JJOO de invierno
+participants_female_by_country_year_winter = df_women_winter.groupby(['Country', 'Year']).size().reset_index(name='Female_Participants')
+
+# Sumar la participación femenina por país
+participants_female_by_country_winter = participants_female_by_country_year_winter.groupby('Country')['Female_Participants'].sum().reset_index()
+
+# Ordenar los países por la cantidad total de participación femenina
+top_10_countries_winter = participants_female_by_country_winter.sort_values(by='Female_Participants', ascending=False).head(10)
+
+# Definir el número de filas y columnas para los subgráficos
+n_rows = 2  # Número de filas
+n_cols = 5  # Número de columnas
+
+# Gráficos con la evolución de la participación femenina para cada país
+fig, axes = plt.subplots(n_rows, n_cols, figsize=(20, 10))
+
+for i, country in enumerate(top_10_countries_winter['Country']):
+    country_data_winter = participants_female_by_country_year_winter[participants_female_by_country_year_winter['Country'] == country]
+    
+    row = i // n_cols
+    col = i % n_cols
+    
+    axes[row, col].plot(country_data_winter['Year'], country_data_winter['Female_Participants'], label=country, color='blue')
+    axes[row, col].set_title(f'Evolución: {country}')
+    axes[row, col].set_xlabel('Año')
+    axes[row, col].set_ylabel('Número de Participantes Femeninas')
+
+plt.tight_layout()
+plt.show()
+
+# DataFrame con la información de los 10 países con más participación femenina en los JJOO de verano
+top_10_countries_summer_data = participants_female_by_country_year_summer[participants_female_by_country_year_summer['Country'].isin(top_10_countries_summer['Country'])]
+
+# Exportar DataFrame a un archivo CSV
+output_file_path_summer_data = 'top_10_countries_female_participation_summer.csv'
+top_10_countries_summer_data.to_csv(output_file_path_summer_data, index=False)
+
+# DataFrame con la información de los 10 países con más participación femenina en los JJOO de invierno
+top_10_countries_winter_data = participants_female_by_country_year_winter[participants_female_by_country_year_winter['Country'].isin(top_10_countries_winter['Country'])]
+
+# Exportar DataFrame a un archivo CSV
+output_file_path_winter_data = 'top_10_countries_female_participation_winter.csv'
+top_10_countries_winter_data.to_csv(output_file_path_winter_data, index=False)
+
+# 2. ¿Qué países han promovido históricamente la participación femenina?
+
+# Contamos los países con más participación femenina
+women_country_count_summer = df_women_summer['NOC'].value_counts()
+women_country_count_winter = df_women_winter['NOC'].value_counts()
+
+# Gráfico de barras
+plt.figure(figsize=(10, 6))
+women_country_count_summer.head(10).plot(kind='bar', color='purple')
+plt.title('Top 10 Países con Mayor Participación Femenina en los Juegos Olímpicos (Summer)')
+plt.xlabel('País')
+plt.ylabel('Número de Participantes')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 6))
+women_country_count_winter.head(10).plot(kind='bar', color='purple')
+plt.title('Top 10 Países con Mayor Participación Femenina en los Juegos Olímpicos (Winter)')
+plt.xlabel('País')
+plt.ylabel('Número de Participantes')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# DataFrame con los datos de women_country_count_summer
+women_country_count_summer_df = women_country_count_summer.reset_index()
+women_country_count_summer_df.columns = ['Country', 'Female Participants']
+
+# Guardar DataFrame como un archivo CSV
+output_csv_path_summer = 'women_country_count_summer.csv'
+women_country_count_summer_df.to_csv(output_csv_path_summer, index=False)
+
+# DataFrame con los datos de women_country_count_winter
+women_country_count_winter_df = women_country_count_winter.reset_index()
+women_country_count_winter_df.columns = ['Country', 'Female Participants']
+
+# Guardar DataFrame como un archivo CSV
+output_csv_path_winter = 'women_country_count_winter.csv'
+women_country_count_winter_df.to_csv(output_csv_path_winter, index=False)
+
+# Contamos el total de participación femenina por países
+women_country_count = df_women['NOC'].value_counts()
+
+# Contamos la cantidad de participantes femeninas por año
+participants_female_by_year_summer = df_women_summer.groupby(['Year']).size().reset_index(name='Female_Participants')
+participants_female_by_year_winter = df_women_winter.groupby(['Year']).size().reset_index(name='Female_Participants')
+
+# Exportar a CSV 
+output_path_participants_by_year_summer = 'female_participants_by_year_summer.csv'
+output_path_participants_by_year_winter = 'female_participants_by_year_winter.csv'
+participants_female_by_year_summer.to_csv(output_path_participants_by_year_summer, index=False)
+participants_female_by_year_winter.to_csv(output_path_participants_by_year_winter, index=False)
+
+print('Summer:', participants_female_by_year_summer)
+print('Winter:', participants_female_by_year_winter)
+
+# Contar la cantidad de participantes femeninas por país y año
+participants_female_by_country_year = df_women.groupby(['Team', 'Year']).size().reset_index(name='Female_Participants')
+
+# Exportar a CSV 
+output_path_participants_by_country_year = 'female_participants_by_country_year.csv'
+participants_female_by_country_year.to_csv(output_path_participants_by_country_year, index=False)
+
+# 3. ¿Ha habido avances en la equidad en la obtención de medallas entre géneros?
+
+# Contamos las medallas ganadas por mujeres y hombres según season
+medals_men_summer = df_men_summer[df_men_summer['Medal'].notna()]
+medals_women_summer = df_women_summer[df_women_summer['Medal'].notna()]
+
+medals_men_winter = df_men_winter[df_men_winter['Medal'].notna()]
+medals_women_winter = df_women_winter[df_women_winter['Medal'].notna()]
+
+
+# Gráfica con la cantidad de medallas ganadas por cada género a lo largo de los años
+medals_by_year_men_summer = medals_men_summer.groupby('Year').size()
+medals_by_year_women_summer = medals_women_summer.groupby('Year').size()
+
+medals_by_year_men_winter = medals_men_winter.groupby('Year').size()
+medals_by_year_women_winter = medals_women_winter.groupby('Year').size()
+
+plt.figure(figsize=(12, 6))
+plt.plot(medals_by_year_men_summer.index, medals_by_year_men_summer.values, label='Hombres', color='blue')
+plt.plot(medals_by_year_women_summer.index, medals_by_year_women_summer.values, label='Mujeres', color='red')
+plt.title('Evolución de las Medallas Ganadas por Género a lo Largo de los Años (Summer)')
+plt.xlabel('Año')
+plt.ylabel('Número de Medallas')
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(12, 6))
+plt.plot(medals_by_year_men_winter.index, medals_by_year_men_winter.values, label='Hombres', color='blue')
+plt.plot(medals_by_year_women_winter.index, medals_by_year_women_winter.values, label='Mujeres', color='red')
+plt.title('Evolución de las Medallas Ganadas por Género a lo Largo de los Años (Winter)')
+plt.xlabel('Año')
+plt.ylabel('Número de Medallas')
+plt.legend()
+plt.tight_layout()
+plt.show()
+
