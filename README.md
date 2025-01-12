@@ -9,4 +9,7 @@ A lo largo de la historia de los Juegos Olímpicos, la participación de las muj
 Algunos países han tomado la delantera en la promoción de la participación femenina en los Juegos Olímpicos. 
 
 
+Estados Unidos, Alemania y Rusia cuentan con las mayores cifras de participación femenina en sus equipos olímpicos.
+
+
 https://infogram.com/participacionfemeninajjoo-1hmr6g8oqodwz2n?live
